@@ -42,16 +42,50 @@ function weather(location) {
   }
 
  //sela setup
- if(localStorage.getItem("sela_setup")!==null){
-    //weather.JSON
- }
-
- //sela information setup
- 
-  
-  if (localStorage.getItem("jarvis_setup") !== null) {
+ if (localStorage.getItem("jarvis_setup") !== null) {
     weather(JSON.parse(localStorage.getItem("jarvis_setup")).location);
   }
+  
+  // sela information setup
+  
+  const setup = document.querySelector(".sela_setup");
+  setup.style.display = "none";
+  if (localStorage.getItem("sela_setup") === null) {
+    setup.style.display = "block";
+    setup.querySelector("button").addEventListener("click", userInfo);
+  }
+
+
+ //user info funcaton
+ function userInfo() {
+    let setupinfo = {
+        name: setup.querySelectorAll("input")[0].value,
+        bio: setup.querySelectorAll("input")[1].value,
+        location: setup.querySelectorAll("input")[2].value,
+        instagram: setup.querySelectorAll("input")[3].value,
+        facebook: setup.querySelectorAll("input")[4].value,
+        github: setup.querySelectorAll("input")[5].value,
+    };
+    
+    let testArr = [];
+
+    setup.querySelectorAll("input").forEach((e) => {
+        testArr.push(e.value);
+    });
+
+    if (testArr.includes("")) {
+        readOut("sir enter your complete information");
+    } else {
+        localStorage.clear();
+        localStorage.setItem("sela_setup", JSON.stringify(setupinfo)); // Use setupinfo here
+        setup.style.display = "none";
+        weather(JSON.parse(localStorage.getItem("sela_setup")).location); // Use setupinfo here as well
+    }
+}
+
+  //if (localStorage.getItem("sela_setup") !== null) {
+   // weather(JSON.parse(localStorage.getItem("sela_setup")).location);
+ // }
 
 //speech reconiaztion
 
@@ -67,6 +101,7 @@ recognition.onstart = function(){
 recognition.onresult = function(event) {
     let current = event.resultIndex;
     let transcript = event.results[current][0].transcript;
+    let userdata =localStorage.getItem("sela_setup")
     
     //console.log("Event Object:", event);
    console.log(`my words:${transcript}`);
@@ -149,6 +184,38 @@ recognition.onresult = function(event) {
         window.open(`https://mail.google.com/mail/u/${accId}/`);
     }
     
+
+    //github
+    if (transcript.includes("open github")) {
+        readOut("opening github")
+        window.open("https://github.com/")
+        
+    }
+    if (transcript.includes("open my github profile")) {
+        readOut("opening  your github profile")
+        window.open(`https://github.com/${JSON.parse(userdata).github}`)
+        
+    }
+    if (transcript.includes("open instagram")) {
+        readOut("opening instagram")
+        window.open("https://instagram.com/")
+        
+    }
+    if (transcript.includes("open my instagram profile")) {
+        readOut("opening  your instagram profile")
+        window.open(`https://instagram.com/${JSON.parse(userdata).instagram}`)
+        
+    }
+    if (transcript.includes("open facebook")) {
+        readOut("opening facebook")
+        window.open("https://facebook.com/")
+        
+    }
+    if (transcript.includes("open my facebook profile")) {
+        readOut("opening  your facebook profile")
+        window.open(`https://facebook.com/${JSON.parse(userdata).facebook}`)
+        
+    }
    
     
 }
