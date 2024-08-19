@@ -2,6 +2,8 @@
 const startBtn =document.querySelector("#start");
 const stopBtn =document.querySelector("#stop");
 const speakBtn =document.querySelector("#speak");
+const time =document.querySelector("#time");
+const battery=document.querySelector("#battery");
 
 //weather setup
 function weather(location) {
@@ -40,6 +42,66 @@ function weather(location) {
     k = k - 273.15;
     return k.toFixed(2);
   }
+
+
+
+
+
+
+
+
+
+
+  
+  function batteryCallBack(batteryObject) {
+    console.log("Battery callback executed");
+    printBatteryStatus(batteryObject);
+
+    batteryObject.addEventListener('levelchange', () => {
+        printBatteryStatus(batteryObject);
+    });
+}
+
+function printBatteryStatus(batteryObject) {
+    document.getElementById('battery').textContent = `Battery Level: ${Math.round(batteryObject.level * 100)}%`;
+    console.log(`Battery Level: ${Math.round(batteryObject.level * 100)}%`);
+}
+
+window.onload = () => {
+    console.log("JavaScript is running!");
+
+    // Time
+    updateTime(); 
+    setInterval(updateTime, 1000); 
+
+    // Battery
+    navigator.getBattery().then(batteryCallBack).catch(err => {
+        console.log("Battery API error:", err);
+    });
+};
+
+function updateTime() {
+    let date = new Date();
+    let hrs = date.getHours();
+    let mins = date.getMinutes();
+    let secs = date.getSeconds();
+    document.getElementById('time').textContent = `${hrs}:${mins}:${secs}`;
+    console.log(`Time updated: ${hrs}:${mins}:${secs}`);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  //sela setup
  if (localStorage.getItem("jarvis_setup") !== null) {

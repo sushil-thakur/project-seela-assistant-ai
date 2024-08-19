@@ -22,6 +22,7 @@ button {
 label {
   color: rgb(163, 0, 0);
   text-align: left;
+  
 }
 input {
   color: black;
@@ -29,6 +30,7 @@ input {
   border: none;
   border-bottom: 3px solid black;
   width: 60vw;
+  margin-bottom: 10px;
 }
 
 #sub_btn {
@@ -66,6 +68,7 @@ input {
   color: white;
   top: 10px;
   left: 10px;
+  font-size: 24px;
 }
 
 .in_middle {
@@ -80,9 +83,9 @@ input {
   flex-direction: column;
   align-items: center;
   z-index: 10000;
-  width: 80vw;
+  /* width: 80vw;
   height: 70vh;
-  overflow-y: scroll;
+  overflow-y: scroll; */
 }
 .in_middle *{
   position: static;
@@ -110,7 +113,7 @@ input {
 
 }
 .cont *{
-  position: absolute;
+  position: static;
 
 }
 .cont{
@@ -118,6 +121,9 @@ input {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  background-color: black;
+  height: 50px;
+  
 }
 .battery{
   left: 50%;
