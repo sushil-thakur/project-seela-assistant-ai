@@ -4,6 +4,8 @@ const stopBtn =document.querySelector("#stop");
 const speakBtn =document.querySelector("#speak");
 const time =document.querySelector("#time");
 const battery=document.querySelector("#battery");
+const internet=document.querySelector("#internet");
+const turn_on=document.querySelector("#turn_on")
 
 //weather setup
 function weather(location) {
@@ -46,49 +48,72 @@ function weather(location) {
 
 
 
+  //time setup
+let date=new Date();
+let hrs =date.getHours();
+let mins=date.getMinutes();
+let secs=date.getSeconds();
 
+//auto sela
+function autoSela(params) {
+    setTimeout(() => {
+        recognition.starta()
+    }, 1000);
+    
+}
 
+//onloads
+window.onload = () => {
+    const turnOn = document.getElementById('turn_on');
+    turnOn.play().catch(error => {
+        console.error('Audio playback failed:', error);
+    });
+    turnOn.addEventListener('ended', () => {
+        setTimeout(() => {
+            autoSela();
+            readOut('Ready to go sir');
+            if (localStorage.getItem('sela_setup') == null) {
+                readOut('Sir, fill out the form');
+            }
+        }, 200);
+    });
+};
 
+    time.textContent =`${hrs}:${mins}:${secs}`
+    setInterval=(()=>{
+        let date=new Date();
+let hrs =date.getHours();
+let mins=date.getMinutes();
+let secs=date.getSeconds();
+ time.textContent = `${hrs}:${mins}:${secs}`
+    },1000);
+};
 
-
-
-  
-  function batteryCallBack(batteryObject) {
-    console.log("Battery callback executed");
+//battery setuop
+function batteryCallBack(batteryObject) {
     printBatteryStatus(batteryObject);
 
     batteryObject.addEventListener('levelchange', () => {
         printBatteryStatus(batteryObject);
+        //interet
+        navigator.onLine?(internet.textContent="online"):(internet.textContent="offline")
     });
 }
 
 function printBatteryStatus(batteryObject) {
-    document.getElementById('battery').textContent = `Battery Level: ${Math.round(batteryObject.level * 100)}%`;
-    console.log(`Battery Level: ${Math.round(batteryObject.level * 100)}%`);
+    battery.textContent = `Battery Level: ${Math.round(batteryObject.level * 100)}%`
+    if(batteryObject=true){
+       document.querySelector(".battery").style.width ="200px"
+       battery.textContent=`Battery Level: ${Math.round(batteryObject.level * 100)}%charging`
+    }
+    
 }
+//internet set up
 
-window.onload = () => {
-    console.log("JavaScript is running!");
-
-    // Time
-    updateTime(); 
-    setInterval(updateTime, 1000); 
-
-    // Battery
-    navigator.getBattery().then(batteryCallBack).catch(err => {
-        console.log("Battery API error:", err);
-    });
-};
-
-function updateTime() {
-    let date = new Date();
-    let hrs = date.getHours();
-    let mins = date.getMinutes();
-    let secs = date.getSeconds();
-    document.getElementById('time').textContent = `${hrs}:${mins}:${secs}`;
-    console.log(`Time updated: ${hrs}:${mins}:${secs}`);
-}
-
+navigator.onLine?(internet.textContent="online"):(internet.textContent="offline")
+setInterval(() => {
+    navigator.onLine?(internet.textContent="online"):(internet.textContent="offline")
+}, 60000);
 
 
 
