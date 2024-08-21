@@ -1,11 +1,42 @@
 //elements
-const startBtn =document.querySelector("#start");
-const stopBtn =document.querySelector("#stop");
-const speakBtn =document.querySelector("#speak");
-const time =document.querySelector("#time");
-const battery=document.querySelector("#battery");
-const internet=document.querySelector("#internet");
-const turn_on=document.querySelector("#turn_on")
+const startBtn = document.querySelector("#start");
+const stopBtn = document.querySelector("#stop");
+const speakBtn = document.querySelector("#speak");
+const timeElem = document.querySelector("#time");
+const batteryElem = document.querySelector("#battery");
+const internetElem = document.querySelector("#internet");
+const turn_on = document.querySelector("#turn_on");
+document.querySelector("#start_sela_btn").addEventListener("click",()=>{
+    recognition.start()
+})
+
+
+// commdand for sela
+let selacoms =[]
+selacoms.push("hi friday");
+selacoms.push("what are your commands");
+selacoms.push("close this - to close opened popups");
+selacoms.push(
+  "change my information - information regarding your acoounts and you"
+);
+selacoms.push("whats the weather or temperature");
+selacoms.push("show the full weather report");
+selacoms.push("are you there - to check sela presence");
+selacoms.push("shut down - stop voice recognition");
+selacoms.push("open google");
+selacoms.push('search for "your keywords" - to search on google ');
+selacoms.push("open whatsapp");
+selacoms.push("open youtube");
+selacoms.push('play "your keywords" - to search on youtube ');
+selacoms.push("close this youtube tab - to close opened youtube tab");
+selacoms.push("open firebase");
+selacoms.push("open netlify");
+selacoms.push("open twitter");
+selacoms.push("open my twitter profile");
+selacoms.push("open instagram");
+selacoms.push("open my instagram profile");
+selacoms.push("open github");
+selacoms.push("open my github profile");
 
 //weather setup
 function weather(location) {
@@ -48,79 +79,69 @@ function weather(location) {
 
 
 
-  //time setup
-let date=new Date();
-let hrs =date.getHours();
-let mins=date.getMinutes();
-let secs=date.getSeconds();
 
-//auto sela
-function autoSela(params) {
-    setTimeout(() => {
-        recognition.starta()
-    }, 1000);
-    
+
+window.onload=function(){
+    readOut("... ");
+};
+document.getElementById("startAudio").addEventListener("click", function() {
+    const audio = document.getElementById("turn_on");
+    audio.play().catch(error => {
+        console.error("Audio playback failed:", error);
+    });
+    //command adding
+    selacoms.forEach((e) => {
+        document.querySelector(".commands").innerHTML += `<p>#${e}</p><br/>`;
+    });
+});
+
+
+
+// Time Setup
+function updateTime() {
+    let date = new Date();
+    let hrs = date.getHours().toString().padStart(2, '0');
+    let mins = date.getMinutes().toString().padStart(2, '0');
+    let secs = date.getSeconds().toString().padStart(2, '0');
+    timeElem.textContent = `${hrs}:${mins}:${secs}`;
 }
+setInterval(updateTime, 1000);
+updateTime();
 
-//onloads
-window.onload = () => {
-    const turnOn = document.getElementById('turn_on');
-    turnOn.play().catch(error => {
-        console.error('Audio playback failed:', error);
-    });
-    turnOn.addEventListener('ended', () => {
-        setTimeout(() => {
-            autoSela();
-            readOut('Ready to go sir');
-            if (localStorage.getItem('sela_setup') == null) {
-                readOut('Sir, fill out the form');
-            }
-        }, 200);
-    });
-};
-
-    time.textContent =`${hrs}:${mins}:${secs}`
-    setInterval=(()=>{
-        let date=new Date();
-let hrs =date.getHours();
-let mins=date.getMinutes();
-let secs=date.getSeconds();
- time.textContent = `${hrs}:${mins}:${secs}`
-    },1000);
-};
-
-//battery setuop
+// Battery Setup
 function batteryCallBack(batteryObject) {
     printBatteryStatus(batteryObject);
 
     batteryObject.addEventListener('levelchange', () => {
         printBatteryStatus(batteryObject);
-        //interet
-        navigator.onLine?(internet.textContent="online"):(internet.textContent="offline")
+    });
+
+    batteryObject.addEventListener('chargingchange', () => {
+        printBatteryStatus(batteryObject);
     });
 }
 
 function printBatteryStatus(batteryObject) {
-    battery.textContent = `Battery Level: ${Math.round(batteryObject.level * 100)}%`
-    if(batteryObject=true){
-       document.querySelector(".battery").style.width ="200px"
-       battery.textContent=`Battery Level: ${Math.round(batteryObject.level * 100)}%charging`
-    }
-    
+    const batteryLevel = Math.round(batteryObject.level * 100);
+    const chargingStatus = batteryObject.charging ? 'Charging' : 'Not Charging';
+    batteryElem.textContent = `Battery Level: ${batteryLevel}% - ${chargingStatus}`;
 }
-//internet set up
 
-navigator.onLine?(internet.textContent="online"):(internet.textContent="offline")
-setInterval(() => {
-    navigator.onLine?(internet.textContent="online"):(internet.textContent="offline")
-}, 60000);
-
-
-
+// Internet Setup
+function updateInternetStatus() {
+    navigator.onLine ? internetElem.textContent = "Online" : internetElem.textContent = "Offline";
+}
+setInterval(updateInternetStatus, 60000);
+updateInternetStatus();
 
 
+// Play audio on page load
+window.onload = function() {
+    turn_on.play();
+};
 
-
+// Request Battery Status
+navigator.getBattery().then(batteryCallBack);
 
 
 
@@ -129,8 +150,8 @@ setInterval(() => {
 
 
  //sela setup
- if (localStorage.getItem("jarvis_setup") !== null) {
-    weather(JSON.parse(localStorage.getItem("jarvis_setup")).location);
+ if (localStorage.getItem("sela_setup") !== null) {
+    weather(JSON.parse(localStorage.getItem("sela_setup")).location);
   }
   
   // sela information setup
@@ -199,6 +220,12 @@ recognition.onresult = function(event) {
         readOut("hello sir");
         //console.log("hello sir");
     }
+    if (transcript.includes("what are your commands")) {
+        readOut("sir here are the commands i can do ");
+        document.querySelector(".commands").style.display="block"
+        
+    }
+
     if(transcript.includes("open youtube")){
         readOut("opening youtube sir");
         window.open("https://www.youtube.com/");
@@ -341,6 +368,5 @@ speakBtn.addEventListener("click", () => {
     readOut("Hello, I am Sela, an advanced AI assistant. How can I help you, sir?");
 });
 
-window.onload=function(){
-    readOut("... ");
-};
+
+

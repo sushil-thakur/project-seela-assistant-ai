@@ -188,6 +188,7 @@ input {
 }
 .commands *{
   color: rgb(197 0, 0);
+  
 
 
 }
@@ -208,3 +209,34 @@ input {
 #start_sela_btn img{
   height: 300px;
 }
+/* Adjusted Button Styling for Start Audio */
+#startAudio {
+  background-color: #e91e63; /* Pink background */
+  color: white;              /* White text */
+  padding: 8px 16px;         /* Smaller padding */
+  outline: none;             /* Remove outline */
+  border: none;              /* No border */
+  border-radius: 8px;        /* Slightly smaller rounded corners */
+  font-size: 14px;           /* Slightly smaller font size */
+  font-weight: 600;          /* Slightly bold text */
+  cursor: pointer;           /* Pointer/hand icon on hover */
+  transition: background-color 0.3s ease, transform 0.1s ease; /* Smooth transition on hover and click */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for a 3D effect */
+  position: fixed;           /* Position it similar to other buttons */
+  top: 50%;                  /* Vertically centered */
+  left: 10px;                /* Positioned towards the left */
+  transform: translateY(-50%); /* Center it vertically */
+  z-index: 1000;             /* Ensure it appears on top */
+}
+
+/* Hover effect */
+#startAudio:hover {
+  background-color: #c2185b; /* Darker pink on hover */
+}
+
+/* Active (Click) effect */
+#startAudio:active {
+  background-color: #ad1457; /* Even darker pink when clicked */
+  transform: translateY(-48%); /* Slightly move up when pressed */
+}
+
