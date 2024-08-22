@@ -47,7 +47,7 @@ input {
   background-color: black;
   height: 100vh;
   width: 100vw;
-  user-select: none;
+  
 }
 
 .machine * {

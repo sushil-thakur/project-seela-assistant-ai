@@ -6,6 +6,11 @@ const timeElem = document.querySelector("#time");
 const batteryElem = document.querySelector("#battery");
 const internetElem = document.querySelector("#internet");
 const turn_on = document.querySelector("#turn_on");
+const msgs = document.querySelector(".messages");
+
+//create a new chat
+
+
 document.querySelector("#start_sela_btn").addEventListener("click",()=>{
     recognition.start()
 })
@@ -143,6 +148,14 @@ window.onload = function() {
 // Request Battery Status
 navigator.getBattery().then(batteryCallBack);
 
+function createMsg(who , msg){
+    let newmsg =document.createElement("p")
+    newmsg.innerText =msg;
+    newmsg.setAttribute("class",who)
+    msgs.appendChild(newmsg)
+
+}
+
 
 
 
@@ -213,6 +226,8 @@ recognition.onresult = function(event) {
     
     //console.log("Event Object:", event);
    console.log(`my words:${transcript}`);
+   createMsg("usermsg", transcript)
+
 
     transcript = transcript.toLowerCase();
 
@@ -223,6 +238,13 @@ recognition.onresult = function(event) {
     if (transcript.includes("what are your commands")) {
         readOut("sir here are the commands i can do ");
         document.querySelector(".commands").style.display="block"
+        
+        
+    }
+    if (transcript.includes("close this")) {
+        readOut("closed");
+        document.querySelector(".commands").style.display="none"
+        setup.style.display="none"
         
     }
 
@@ -327,7 +349,8 @@ recognition.onresult = function(event) {
     }
     if (transcript.includes("open my facebook profile")) {
         readOut("opening  your facebook profile")
-        window.open(`https://facebook.com/${JSON.parse(userdata).facebook}`)
+       let a= window.open(`https://facebook.com/${JSON.parse(userdata).facebook}`)
+       windowB.push(a)
         
     }
    
@@ -362,11 +385,13 @@ function readOut(message) {
     speech.volume = 1;
     window.speechSynthesis.speak(speech);
     console.log("Speaking out:", message);
+    createMsg("jmsg", message)
 }
 
 speakBtn.addEventListener("click", () => {
     readOut("Hello, I am Sela, an advanced AI assistant. How can I help you, sir?");
 });
+
 
 
 
