@@ -398,15 +398,15 @@ recognition.onresult = function (event) {
   
     // firebase
   
-    if (transcript.includes("open fire base") && transcript.includes("account")) {
-      readOut("opening firebase console");
+    if (transcript.includes("open gmail") && transcript.includes("account")) {
+      readOut("opening gmail account");
       let accId = transcript;
       accId = accId.split("");
       accId.pop();
       accId = accId[accId.length - 1];
       console.log(`accId: ${accId}`);
-      // https://console.firebase.google.com/u/0/
-      let a = window.open(`https://console.firebase.google.com/u/${accId}/`);
+      
+      let a = window.open(`https://mail.google.com/u/${accId}/`);
       windowsB.push(a)
     }
   
